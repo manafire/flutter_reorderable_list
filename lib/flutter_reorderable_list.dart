@@ -48,6 +48,7 @@ class ReorderableList extends StatefulWidget {
     Key? key,
     required this.child,
     required this.onReorder,
+    this.onReorderStart,
     this.onReorderDone,
     this.cancellationToken,
     this.decoratePlaceholder = _defaultDecoratePlaceholder,
@@ -56,6 +57,9 @@ class ReorderableList extends StatefulWidget {
   final Widget child;
 
   final ReorderItemCallback onReorder;
+
+  /// called when the drag starts
+  final VoidCallback? onReorderStart;
   final ReorderCompleteCallback? onReorderDone;
   final DecoratePlaceholder decoratePlaceholder;
 
@@ -276,6 +280,9 @@ class _ReorderableListState extends State<ReorderableList>
       _dragging = _maybeDragging;
       _maybeDragging = null;
     }
+
+    widget.onReorderStart?.call();
+
     _hapticFeedback();
     final draggedItem = _items[_dragging]!;
     draggedItem.update();
